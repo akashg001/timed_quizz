@@ -28,6 +28,7 @@ def create_quiz(request):
 
 @csrf_exempt
 @cache_page(60 * 5)
+@api_view(['GET'])
 def get_active_quiz(request):
     try:
         now = datetime.now()
@@ -42,6 +43,7 @@ def get_active_quiz(request):
     
 @csrf_exempt
 @cache_page(60 * 5)
+@api_view(['GET'])
 def get_quiz_result(request, id):
     try:
         print("IDDDDDD",id)
@@ -61,6 +63,7 @@ def get_quiz_result(request, id):
 
 @csrf_exempt
 @cache_page(60 * 5)
+@api_view(['GET'])
 def get_all_quizzes(request):
     try:
         quizzes = Quiz.objects.all()

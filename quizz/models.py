@@ -9,8 +9,3 @@ class Quiz(models.Model):
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     status = models.CharField(max_length=10, default='inactive',null=True)
-
-    def __str__(self):
-        # Convert the JSON string back to a list
-        return self.question
-    

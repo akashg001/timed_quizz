@@ -9,6 +9,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.conf import settings
+import pytz
+
+
 @csrf_exempt
 @api_view(['POST'])
 def create_quiz(request):
@@ -41,11 +44,15 @@ def get_active_quiz(request):
 @cache_page(60 * 5)
 def get_quiz_result(request, id):
     try:
-        quiz = Quiz.objects.get(id=id)
-        if quiz.end_date + timedelta(minutes=5) > datetime.now():
+        print("IDDDDDD",id)
+        quiz = Quiz.objects.get(id=id) 
+        date = datetime.now()
+        end_date = quiz.end_date+ timedelta(minutes=5)
+        end_date = end_date.replace(tzinfo=None)
+        if end_date > date.replace(tzinfo=None):
             return JsonResponse({'message': 'Quiz result not available yet'}, status=403)
         serializer = QuizSerializer(quiz)
-        return JsonResponse({'rightAnswer': serializer.data['rightAnswer']})
+        return JsonResponse({'rightAnswer': serializer.data['right_answer']})
     except ObjectDoesNotExist:
         return JsonResponse({'error': 'Quiz not found'}, status=404)
     except Exception as e:
